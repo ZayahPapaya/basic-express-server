@@ -1,0 +1,1 @@
+// checks query string for name property, sends through when valid and error when not valid
