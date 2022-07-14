@@ -28,14 +28,14 @@ describe('Node Server', () => {
   });
 
   it('returns no name in query', async () => {
-    const response = await request.get(`/person:${null}`);
+    const response = await request.get(`/person/`);
     expect(response.status).toBe(500);
   });
 
   it('returns name', async () => {
-    const response = await request.get(`/person:${ { name: Zayah } }`);
+    const response = await request.get(`/person/Zayah`);
     expect(response.status).toBe(200);
-    expect(response.body.name).toBe('Zayah');
+    expect(response.body.name).toMatch(/Zayah/);
   });
 
 });

@@ -7,6 +7,7 @@ const { validator } = require('./middleware/validator');
 
 const hello = (req, res) => res.status(200).send('Hello, World');
 const missing = (req, res) => res.status(404).send('Not found');
+const yikes = (req, res) => res.status(500).send('Yikes');
 
 const data = (req, res) => {
   res.status(200).send({
@@ -14,15 +15,17 @@ const data = (req, res) => {
     role: 'Student'
   });
 };
-
+const name = (req, res) => {
+  res.status(200).send({ name: req.params.name });
+}
 const app = express();
 
 app.use(logger);
-app.use(validator);
 
 app.get('/', hello);
 app.get('/data', data);
-app.get('/person');
+app.get('/person/:name', validator, name);
+app.get('/person/', yikes);
 app.get('*', missing);
 
 function start(port) {

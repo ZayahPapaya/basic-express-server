@@ -15,5 +15,5 @@ describe('Logger', () => {
     const next = jest.fn();
     logger(req, res, next);
     expect(next).toHaveBeenCalled();
-  })
+  });
 })
