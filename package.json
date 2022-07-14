@@ -1,0 +1,28 @@
+{
+  "name": "basic-express-server",
+  "version": "1.0.0",
+  "description": "https://canvas.instructure.com/courses/4898196/assignments/30604100",
+  "main": "index.js",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.5",
+    "jest": "^28.1.2",
+    "supertest": "^6.2.4"
+  },
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZayahPapaya/basic-express-server.git"
+  },
+  "author": "Zayah Lang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ZayahPapaya/basic-express-server/issues"
+  },
+  "homepage": "https://github.com/ZayahPapaya/basic-express-server#readme"
+}
