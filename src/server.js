@@ -8,16 +8,13 @@ const { validator } = require('./middleware/validator');
 const hello = (req, res) => res.status(200).send('Hello, World');
 const missing = (req, res) => res.status(404).send('Not found');
 const yikes = (req, res) => res.status(500).send('Yikes');
-
+const name = (req, res) => res.status(200).send({ name: req.params.name });
 const data = (req, res) => {
   res.status(200).send({
     name: 'Zayah',
     role: 'Student'
   });
 };
-const name = (req, res) => {
-  res.status(200).send({ name: req.params.name });
-}
 const app = express();
 
 app.use(logger);
