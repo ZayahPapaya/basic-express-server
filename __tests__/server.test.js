@@ -37,5 +37,13 @@ describe('Node Server', () => {
     expect(response.status).toBe(200);
     expect(response.body.name).toMatch(/Zayah/);
   });
+  
+  it('starts on a port', () => {
+    jest.spyOn(server.app, 'listen').mockImplementation();
+
+    server.start(3000);
+
+    expect(server.app.listen).toHaveBeenCalledWith(3000, expect.anything());
+  });
 
 });
