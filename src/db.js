@@ -1,5 +1,7 @@
 
 const { Sequelize, DataTypes } = require('sequelize');
+const { player } = require('./models/playerModel');
+const { item } = require('./models/itemModel');
 let connection_string;
 
 switch (process.env.NODE_ENV) {
@@ -9,7 +11,7 @@ switch (process.env.NODE_ENV) {
   case 'dev':
     connection_string = 'sqlite::memory:';
     break;
-    case 'staging': // empty
+  case 'staging': // empty
     // connection_string = `sqlite:${process.env.SQLITE_FILE}`;
     // break;
   default:
@@ -30,4 +32,6 @@ switch (process.env.NODE_ENV) {
 db.sync();//in development only, it rejiggers the DB. Can remove or overwrite data.
 module.exports = {
   db,
+  Player: player(db),
+  Item: item(db)
 };
