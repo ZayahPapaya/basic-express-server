@@ -4,10 +4,16 @@
 const express = require('express');
 const { logger } = require('./middleware/logger');
 const { validator } = require('./middleware/validator');
-
+require('./db');
+const PlayerHandler = require('./handlers/playerHandler');
+const ItemHandler = require('./handlers/itemHandler');
 const hello = (req, res) => res.status(200).send('Hello, World');
 const missing = (req, res) => res.status(404).send('Not found');
 const yikes = (req, res) => res.status(500).send('Yikes');
+const { do404 } = require('./error-handlers/404');
+const { do500 } = require('./error-handlers/500');
+require('./db');
+const { db, Player, Item } = require('./db');
 const name = (req, res) => res.status(200).send({ name: req.params.name });
 const data = (req, res) => {
   res.status(200).send({
@@ -16,18 +22,36 @@ const data = (req, res) => {
   });
 };
 const app = express();
-
 app.use(logger);
+app.use(express.json());
 
 app.get('/', hello);
+
+app.get('/player', PlayerHandler.listPlayers);
+app.post('/player', PlayerHandler.createPlayer);
+app.get('/player:id', PlayerHandler.getPlayer);
+app.put('/player:id', PlayerHandler.updatePlayer);
+app.delete('/player:id', PlayerHandler.deletePlayer);
+
+app.get('/item', ItemHandler.listItems);
+app.post('/item', ItemHandler.createItem);
+app.get('/item:id', ItemHandler.getItem);
+app.put('/item:id', ItemHandler.updateItem);
+app.delete('/item:id', ItemHandler.deleteItem);
+
 app.get('/data', data);
 app.get('/person/:name', validator, name);
 app.get('/person/', yikes);
-app.get('*', missing);
+app.use(do404);
+app.use(do500);
 
-function start(port) {
+let shouldSyncOnStart = false;
+async function start(port) {
+  if(shouldSyncOnStart){ // TODO define this somewhere useful
+    //await db.sync();
+  }
   app.listen(port, () => console.log(`Server up on port ${port}`));
-}
+};
 module.exports = {
   app,
   start,
