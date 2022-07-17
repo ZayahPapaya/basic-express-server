@@ -5,6 +5,7 @@ const supertest = require('supertest');
 const { Item } = require('../src/db');
 const server = require('../src/server');
 const request = supertest(server.app);
+const { db } = require('./../src/db');
 
 describe('Node Server', () => {
 
@@ -91,3 +92,4 @@ describe('CRUD operations', () => {
     expect(response.status).toBe(200);
   });
 });
+db.sync();
