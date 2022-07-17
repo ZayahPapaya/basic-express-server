@@ -45,10 +45,10 @@ app.get('/person/', yikes);
 app.use(do404);
 app.use(do500);
 
-let shouldSyncOnStart = false;
-async function start(port) {
-  if(shouldSyncOnStart){ // TODO define this somewhere useful
-    //await db.sync();
+let shouldSyncOnStart = true;
+function start(port) {
+  if (shouldSyncOnStart) { // TODO define this somewhere useful
+    db.sync();
   }
   app.listen(port, () => console.log(`Server up on port ${port}`));
 };
