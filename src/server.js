@@ -22,22 +22,22 @@ const data = (req, res) => {
   });
 };
 const app = express();
-app.use(logger);
+//app.use(logger);
 app.use(express.json());
 
 app.get('/', hello);
 
 app.get('/player', PlayerHandler.listPlayers);
 app.post('/player', PlayerHandler.createPlayer);
-app.get('/player:id', PlayerHandler.getPlayer);
-app.put('/player:id', PlayerHandler.updatePlayer);
-app.delete('/player:id', PlayerHandler.deletePlayer);
+app.get('/player/:id', PlayerHandler.getPlayer);
+app.put('/player/:id', PlayerHandler.updatePlayer);
+app.delete('/player/:id', PlayerHandler.deletePlayer);
 
 app.get('/item', ItemHandler.listItems);
 app.post('/item', ItemHandler.createItem);
-app.get('/item:id', ItemHandler.getItem);
-app.put('/item:id', ItemHandler.updateItem);
-app.delete('/item:id', ItemHandler.deleteItem);
+app.get('/item/:id', ItemHandler.getItem);
+app.put('/item/:id', ItemHandler.updateItem);
+app.delete('/item/:id', ItemHandler.deleteItem);
 
 app.get('/data', data);
 app.get('/person/:name', validator, name);
