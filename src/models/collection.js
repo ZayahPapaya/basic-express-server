@@ -6,11 +6,9 @@ class Collection {
 
   async create(req, res) { // json
     try {
-      console.log(req.body, "CREATE BODY");
-      const pog = this.model.build(req.body);
-      await pog.save();
-      res.status(201).send(pog);
+      res.status(201).send(await this.model.build(req.body).save());
     } catch (error) {
+      console.log(error);
       res.status(500).send(error);
     }
   }
@@ -46,18 +44,19 @@ class Collection {
     const id = req.params.id;
     try {
       if (!id) throw new Error('No target ID');
-      res.status(200).send(await this.model.destroy({ where: { id } }));
+      await this.model.destroy({ where: { id } });
+      res.status(200).send('destroyed');
     } catch (error) {
       res.status(500).send(error);
     }
   }
 
   routeModel = (app, routeName) => {
-    app.get(`/${routeName}`, this.read);
-    app.post(`/${routeName}`, this.create);
-    app.get(`/${routeName}/:id`, this.read);
-    app.put(`/${routeName}/:id`, this.update);
-    app.delete(`/${routeName}/:id`, this.delete);
+    app.get(`/${routeName}`, (req, res) => this.read(req, res)); // callback needs an arrow function to capture this
+    app.post(`/${routeName}`, (req, res) => this.create(req, res));
+    app.get(`/${routeName}/:id`, (req, res) => this.read(req, res));
+    app.put(`/${routeName}/:id`, (req, res) => this.update(req, res));
+    app.delete(`/${routeName}/:id`, (req, res) => this.delete(req, res));
   };
 }
 module.exports = Collection;

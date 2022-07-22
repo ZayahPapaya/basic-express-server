@@ -53,44 +53,44 @@ describe('CRUD operations', () => {
   let testItem;
   it('Creates a player record', async () => {
     const response = await request.post('/player').send({ username: 'Nooblord', level: 1 });
-    console.log(response);
+    //console.log(response);
     expect(response.status).toBe(201);
   });
   it('Creates an item record', async () => {
     const response = await request.post('/item').send({ name: 'Dragon Warhammer', alc: 30000 });
     expect(response.status).toBe(201);
   });
-  it.skip('Reads a list of player records', async () => {
+  it('Reads a list of player records', async () => {
     const response = await request.get('/player');
     testPlayer = response.body[0].id;
     expect(response.status).toBe(200);
   });
-  it.skip('Reads a list of item records', async () => {
+  it('Reads a list of item records', async () => {
     const response = await request.get('/item');
     testItem = response.body[0].id;
     expect(response.status).toBe(200);
   });
-  it.skip('Finds a specific player', async () => {
+  it('Finds a specific player', async () => {
     const response = await request.get(`/player/${testPlayer}`);
     expect(response.status).toBe(200);
   });
-  it.skip('Finds a specific item', async () => {
+  it('Finds a specific item', async () => {
     const response = await request.get(`/item/${testItem}`);
     expect(response.status).toBe(200);
   });
-  it.skip('Updates a player', async () => {
+  it('Updates a player', async () => {
     const response = await request.put(`/player/${testPlayer}`);
     expect(response.status).toBe(200);
   });
-  it.skip('Updates an item', async () => {
+  it('Updates an item', async () => {
     const response = await request.put(`/item/${testItem}`);
     expect(response.status).toBe(200);
   });
-  it.skip('Deletes a player', async () => {
+  it('Deletes a player', async () => {
     const response = await request.delete(`/player/${testPlayer}`);
     expect(response.status).toBe(200);
   });
-  it.skip('Deletes an item', async () => {
+  it('Deletes an item', async () => {
     const response = await request.delete(`/item/${testItem}`);
     expect(response.status).toBe(200);
   });

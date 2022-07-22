@@ -6,6 +6,7 @@ const PlayerHandler = {}
 PlayerHandler.createPlayer = async (req, res) => {
   const { username, level } = req.body;
   const player = Player.build({ username, level });
+  //console.log(player, "PlayerHandler");
   await player.save();
   res.status(201).send(player);
 };

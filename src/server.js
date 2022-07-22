@@ -4,7 +4,7 @@
 const express = require('express');
 const { logger } = require('./middleware/logger');
 const { validator } = require('./middleware/validator');
-require('./db');
+//require('./db');
 const PlayerHandler = require('./handlers/playerHandler');
 const ItemHandler = require('./handlers/itemHandler');
 const hello = (req, res) => res.status(200).send('Hello, World');
@@ -42,7 +42,9 @@ app.get('/', hello);
 
 new Collection(Player, app, 'player');
 new Collection(Item, app, 'item');
-// new Collection(Drink, app, 'drink');
+
+
+//new Collection(Drink, app, 'drink');
 
 
 
