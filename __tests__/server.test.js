@@ -2,10 +2,8 @@
 
 //const { it, expect } = require('@jest/globals');
 const supertest = require('supertest');
-const { Item } = require('../src/db');
 const server = require('../src/server');
 const request = supertest(server.app);
-const { db } = require('./../src/db');
 
 describe('Node Server', () => {
 
@@ -55,6 +53,7 @@ describe('CRUD operations', () => {
   let testItem;
   it('Creates a player record', async () => {
     const response = await request.post('/player').send({ username: 'Nooblord', level: 1 });
+    //console.log(response);
     expect(response.status).toBe(201);
   });
   it('Creates an item record', async () => {
