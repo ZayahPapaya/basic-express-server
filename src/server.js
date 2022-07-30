@@ -5,16 +5,21 @@ const express = require('express');
 const { logger } = require('./middleware/logger');
 const { validator } = require('./middleware/validator');
 //require('./db');
-const PlayerHandler = require('./handlers/playerHandler');
-const ItemHandler = require('./handlers/itemHandler');
-const hello = (req, res) => res.status(200).send('Hello, World');
-//const missing = (req, res) => res.status(404).send('Not found');
-const yikes = (req, res) => res.status(500).send('Yikes');
+//const PlayerHandler = require('./handlers/playerHandler');
+//const ItemHandler = require('./handlers/itemHandler');
+const { signup, login } = require('./auth/accountHandler');
 const { do404 } = require('./error-handlers/404');
 const { do500 } = require('./error-handlers/500');
+const hello = (req, res) => res.status(200).send('Hello, World');
+const yikes = (req, res) => res.status(500).send('Yikes');
+
+const bcrypt = require('bcrypt');
+const base64 = require('base-64');
+
 const Collection = require('./models/collection');
+//const AccountManagement = require('./auth/accountClass');
 require('./db');
-const { db, Player, Item } = require('./db');
+const { db, Player, Item, Account } = require('./db');
 const name = (req, res) => res.status(200).send({ name: req.params.name });
 const data = (req, res) => {
   res.status(200).send({
@@ -25,35 +30,18 @@ const data = (req, res) => {
 const app = express();
 //app.use(logger);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', hello);
-
-// app.get('/player', PlayerHandler.listPlayers);
-// app.post('/player', PlayerHandler.createPlayer);
-// app.get('/player/:id', PlayerHandler.getPlayer);
-// app.put('/player/:id', PlayerHandler.updatePlayer);
-// app.delete('/player/:id', PlayerHandler.deletePlayer);
-
-// app.get('/item', ItemHandler.listItems);
-// app.post('/item', ItemHandler.createItem);
-// app.get('/item/:id', ItemHandler.getItem);
-// app.put('/item/:id', ItemHandler.updateItem);
-// app.delete('/item/:id', ItemHandler.deleteItem);
+// use middleware to verify login and return 403 forbidden
 
 new Collection(Player, app, 'player');
 new Collection(Item, app, 'item');
+//new Collection(Account, app, 'signup');
+//new AccountManagement(Account, app, 'signup');
 
-
-//new Collection(Drink, app, 'drink');
-
-
-
-
-
-
-
-
-
+app.post('/signup', signup);
+app.get('/login', login); // TODO: make this a login
 app.get('/data', data);
 app.get('/person/:name', validator, name);
 app.get('/person/', yikes);

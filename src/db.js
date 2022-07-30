@@ -2,6 +2,7 @@
 const { Sequelize, DataTypes } = require('sequelize');
 const { player } = require('./models/playerModel');
 const { item } = require('./models/itemModel');
+const { account } = require('./models/accountModel');
 let connection_string;
 
 switch (process.env.NODE_ENV) {
@@ -33,5 +34,6 @@ db.sync();//in development only, it rejiggers the DB. Can remove or overwrite da
 module.exports = {
   db,
   Player: player(db),
-  Item: item(db)
+  Item: item(db),
+  Account: account(db)
 };

@@ -1,7 +1,7 @@
 class Collection {
   constructor(model, app, routeName) {
     this.model = model;
-    this.routeModel(app, routeName);
+    this.routeModel(app, routeName); // Player.routeModel(app, 'player');
   }
 
   async create(req, res) { // json
@@ -12,7 +12,7 @@ class Collection {
       res.status(500).send(error);
     }
   }
-
+//cosmic python book
   async read(req, res) {
     let records = null;
     let options = {};
@@ -51,7 +51,7 @@ class Collection {
     }
   }
 
-  routeModel = (app, routeName) => {
+  routeModel = (app, routeName) => { // app.get('/player', (req, res) => Player.read(req, res));
     app.get(`/${routeName}`, (req, res) => this.read(req, res)); // callback needs an arrow function to capture this
     app.post(`/${routeName}`, (req, res) => this.create(req, res));
     app.get(`/${routeName}/:id`, (req, res) => this.read(req, res));
