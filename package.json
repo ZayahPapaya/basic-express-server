@@ -4,6 +4,9 @@
   "description": "https://canvas.instructure.com/courses/4898196/assignments/30604100",
   "main": "index.js",
   "dependencies": {
+    "base-64": "^1.0.0",
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "nodemon": "^2.0.19",
