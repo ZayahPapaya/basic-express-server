@@ -14,11 +14,12 @@ const { Account } = require('../db');
 //bcrypt.hash(password, 5).then(hashedPassword => { console.log(hashedPassword) });
 // Validate a password
 //bcrypt.compare(password, hashedPassword).then(isValid => { console.log(isValid) });
-const signup = async (req, res) => {
+const signup = async (req, res) => { // TODO: Build in protection against duplicate usernames
   try {
     req.body.password = base64.decode(req.body.password);
     req.body.password = await bcrypt.hash(req.body.password, 3);
-    res.status(201).json(await Account.create(req.body)); // TODO: Don't do this lmao, send back less data
+    const record = await Account.create(req.body);
+    res.status(201).send('Successful account creation!');
   } catch (error) {
     res.status(500).send('Error creating account');
     console.log('Account creation failed, error:', error);
@@ -27,10 +28,10 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   try {
-    const password = await Account.findOne({where: { username: req.body.username }}); // TODO: Build in protection against duplicate usernames
-    console.log('Database password found: ',password.password)
+    const password = await Account.findOne({where: { username: req.body.username }});
+    //console.log('Database password found: ',password.password)
     req.body.password = base64.decode(req.body.password);
-    console.log('Post decode password', req.body.password);
+    //console.log('Post decode password', req.body.password);
     if (bcrypt.compare(req.body.password, password.password)){
       res.status(200).send('Successful signin, INSERT TOKEN HERE');
     } else {
