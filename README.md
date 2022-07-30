@@ -22,3 +22,9 @@
 - /signin requires a JSON object with username and password properties as strings
 - /player requires a JSON object with username as a string and level as a number, and an id for findone, update, and delete
 - /player requires a JSON object with name as a string and alc as a number, and an id for findone, update, and delete
+
+## Collaborators
+
+- Jim
+- Hugo
+- Justin
