@@ -41,7 +41,7 @@ new Collection(Item, app, 'item');
 //new AccountManagement(Account, app, 'signup');
 
 app.post('/signup', signup);
-app.get('/login', login); // TODO: make this a login
+app.get('/signin', login); // TODO: make this a login
 app.get('/data', data);
 app.get('/person/:name', validator, name);
 app.get('/person/', yikes);
