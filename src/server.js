@@ -4,6 +4,7 @@
 const express = require('express');
 const { logger } = require('./middleware/logger');
 const { validator } = require('./middleware/validator');
+const { validateToken } = require('./middleware/token')
 //require('./db');
 //const PlayerHandler = require('./handlers/playerHandler');
 //const ItemHandler = require('./handlers/itemHandler');
@@ -31,8 +32,10 @@ const app = express();
 //app.use(logger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.get('/', hello);
+app.post('/signup', signup);
+app.get('/signin', login); // TODO: make this a login
+app.use(validateToken);
 // use middleware to verify login and return 403 forbidden
 
 new Collection(Player, app, 'player');
@@ -40,8 +43,6 @@ new Collection(Item, app, 'item');
 //new Collection(Account, app, 'signup');
 //new AccountManagement(Account, app, 'signup');
 
-app.post('/signup', signup);
-app.get('/signin', login); // TODO: make this a login
 app.get('/data', data);
 app.get('/person/:name', validator, name);
 app.get('/person/', yikes);

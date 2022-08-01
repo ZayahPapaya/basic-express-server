@@ -12,7 +12,7 @@ class Collection {
       res.status(500).send(error);
     }
   }
-//cosmic python book
+  //cosmic python book
   async read(req, res) {
     let records = null;
     let options = {};
@@ -41,13 +41,17 @@ class Collection {
   }
 
   async delete(req, res) {
-    const id = req.params.id;
-    try {
-      if (!id) throw new Error('No target ID');
-      await this.model.destroy({ where: { id } });
-      res.status(200).send('destroyed');
-    } catch (error) {
-      res.status(500).send(error);
+    if (req.user?.role !== 'admin') {
+      res.status(403).send('Unauthorized action');
+    } else {
+      const id = req.params.id;
+      try {
+        if (!id) throw new Error('No target ID');
+        await this.model.destroy({ where: { id } });
+        res.status(200).send('destroyed');
+      } catch (error) {
+        res.status(500).send(error);
+      }
     }
   }
 

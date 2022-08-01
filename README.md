@@ -28,3 +28,8 @@
 - Jim
 - Hugo
 - Justin
+
+## Lab07 Checklist
+
+- [x] Token
+- [ ] Timestamp on token?
