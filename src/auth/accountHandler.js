@@ -13,11 +13,7 @@ const signup = async (req, res) => {
     console.log(`PASSWORD: ${req.body.password}`);
     const response = await Account.findAll({ where: { role: 'admin' } });
     console.log(`RESPONSE: ${response}`);
-    if (response === null) {
-      req.body.role = 'admin'
-    } else {
-      req.body.role = 'user'
-    };
+    req.body.role = 'admin'
     await Account.create(req.body);
     res.status(201).send({ username: req.body.username, password: req.body.password });
   } catch (error) {
@@ -33,12 +29,12 @@ const login = async (req, res) => {
   // TODO: build in authorization logic to CRUD as middleware
   try {
     console.log(`SEARCH USERNAME: ${req.body.username}`);
-    const password = await Account.findOne({ where: { username: req.body.username } });
-    console.log('Database password found: ',password.password)
+    const account = await Account.findOne({ where: { username: req.body.username } });
+    console.log('Database password found: ',account.password)
     //req.body.password = base64.decode(req.body.password);
     //console.log('Post decode password', req.body.password);
-    if (bcrypt.compare(req.body.password, password.password)) {
-      res.status(200).send({ username: req.body.username, password: password.password, token: process.env.SECRET });
+    if (bcrypt.compare(req.body.password, account.password)) {
+      res.status(200).send({ username: req.body.username, password: account.password, token: account.token , role: account.role });
     } else {
       res.status(403).send('Incorrect login information');
     }

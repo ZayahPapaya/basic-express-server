@@ -5,22 +5,21 @@ class Collection {
   }
 
   async create(req, res) { // json
-    if (req.user?.role !== 'admin' || req.user?.role !== 'editor' || req.user?.role !== 'writer') {
-      res.status(403).send('Unauthorized action');
-    } else {
+    console.log(`RESTER ROLE: ${req.user.role}`);
+    if (req.user?.role === 'admin' || req.user?.role === 'editor' || req.user?.role === 'writer') {
       try {
         res.status(201).send(await this.model.build(req.body).save());
       } catch (error) {
         console.log(error);
         res.status(500).send(error);
       }
+    } else {
+      res.status(403).send('Unauthorized action');
     }
   }
   //cosmic python book
   async read(req, res) {
-    if (req.user?.role !== 'user') {
-      res.status(403).send('Unauthorized action');
-    } else {
+    if (req.user?.role === 'user') {
       let records = null;
       let options = {};
       const id = req.params.id;
@@ -35,13 +34,13 @@ class Collection {
       } catch (error) {
         res.status(500).send(error);
       }
+    } else {
+      res.status(403).send('Unauthorized action');
     }
   }
 
   async update(req, res) {
-    if (req.user?.role !== 'admin' || req.user?.role !== 'editor') {
-      res.status(403).send('Unauthorized action');
-    } else {
+    if (req.user?.role === 'admin' || req.user?.role === 'editor') {
       const id = req.params.id;
       try {
         if (!id) throw new Error('No target ID');
@@ -49,13 +48,13 @@ class Collection {
       } catch (error) {
         res.status(500).send(error);
       }
+    } else {
+      res.status(403).send('Unauthorized action');
     }
   }
 
   async delete(req, res) {
-    if (req.user?.role !== 'admin') {
-      res.status(403).send('Unauthorized action');
-    } else {
+    if (req.user?.role == 'admin') {
       const id = req.params.id;
       try {
         if (!id) throw new Error('No target ID');
@@ -64,6 +63,8 @@ class Collection {
       } catch (error) {
         res.status(500).send(error);
       }
+    } else {
+      res.status(403).send('Unauthorized action');
     }
   }
 
