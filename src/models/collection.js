@@ -5,38 +5,50 @@ class Collection {
   }
 
   async create(req, res) { // json
-    try {
-      res.status(201).send(await this.model.build(req.body).save());
-    } catch (error) {
-      console.log(error);
-      res.status(500).send(error);
+    if (req.user?.role !== 'admin' || req.user?.role !== 'editor' || req.user?.role !== 'writer') {
+      res.status(403).send('Unauthorized action');
+    } else {
+      try {
+        res.status(201).send(await this.model.build(req.body).save());
+      } catch (error) {
+        console.log(error);
+        res.status(500).send(error);
+      }
     }
   }
   //cosmic python book
   async read(req, res) {
-    let records = null;
-    let options = {};
-    const id = req.params.id;
-    try {
-      if (id) {
-        options['where'] = { id };
-        records = await this.model.findOne(options);
-      } else {
-        records = await this.model.findAll(options);
+    if (req.user?.role !== 'user') {
+      res.status(403).send('Unauthorized action');
+    } else {
+      let records = null;
+      let options = {};
+      const id = req.params.id;
+      try {
+        if (id) {
+          options['where'] = { id };
+          records = await this.model.findOne(options);
+        } else {
+          records = await this.model.findAll(options);
+        }
+        res.status(200).send(records);
+      } catch (error) {
+        res.status(500).send(error);
       }
-      res.status(200).send(records);
-    } catch (error) {
-      res.status(500).send(error);
     }
   }
 
   async update(req, res) {
-    const id = req.params.id;
-    try {
-      if (!id) throw new Error('No target ID');
-      res.status(200).send(await this.model.update(req.body, { where: { id } }));
-    } catch (error) {
-      res.status(500).send(error);
+    if (req.user?.role !== 'admin' || req.user?.role !== 'editor') {
+      res.status(403).send('Unauthorized action');
+    } else {
+      const id = req.params.id;
+      try {
+        if (!id) throw new Error('No target ID');
+        res.status(200).send(await this.model.update(req.body, { where: { id } }));
+      } catch (error) {
+        res.status(500).send(error);
+      }
     }
   }
 

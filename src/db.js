@@ -13,24 +13,24 @@ switch (process.env.NODE_ENV) {
     connection_string = 'sqlite::memory:';
     break;
   case 'staging': // empty
-    // connection_string = `sqlite:${process.env.SQLITE_FILE}`;
-    // break;
+  // connection_string = `sqlite:${process.env.SQLITE_FILE}`;
+  // break;
   default:
     connection_string = `sqlite:${process.env.SQLITE_FILE ?? '../db'}`;
     break;
-  }
+}
 
-  const db = new Sequelize(connection_string, {
-    dialectOptions: { // for postgres only
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
+const db = new Sequelize(connection_string, {
+  dialectOptions: { // for postgres only
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
     },
-  });
+  },
+});
 
 
-db.sync();//in development only, it rejiggers the DB. Can remove or overwrite data.
+//db.sync();//in development only, it rejiggers the DB. Can remove or overwrite data.
 module.exports = {
   db,
   Player: player(db),

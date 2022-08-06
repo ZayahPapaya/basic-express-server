@@ -2,8 +2,18 @@
 
 //const { it, expect } = require('@jest/globals');
 const supertest = require('supertest');
+const { db } = require('../src/db');
 const server = require('../src/server');
 const request = supertest(server.app);
+
+beforeAll(async () => {
+  await db.sync();
+  await request.post('/signup').send({ username: 'singup_test', password: 'pogchamp' });
+  await request.get('/signin').send({ username: 'singup_test', password: 'pogchamp' });
+});
+afterAll(async () => {
+  await db.drop();
+});
 
 describe('Node Server', () => {
 
@@ -49,6 +59,7 @@ describe('Node Server', () => {
 });
 
 describe('CRUD operations', () => {
+  
   let testPlayer;
   let testItem;
   it('Creates a player record', async () => {
@@ -62,12 +73,12 @@ describe('CRUD operations', () => {
   });
   it('Reads a list of player records', async () => {
     const response = await request.get('/player');
-    testPlayer = response.body[0].id;
+    testPlayer = response.body[0]?.id;
     expect(response.status).toBe(200);
   });
   it('Reads a list of item records', async () => {
     const response = await request.get('/item');
-    testItem = response.body[0].id;
+    testItem = response.body[0]?.id;
     expect(response.status).toBe(200);
   });
   it('Finds a specific player', async () => {
