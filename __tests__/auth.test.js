@@ -6,6 +6,13 @@ const supertest = require('supertest');
 const mockRequest = supertest(server.app);
 // const bcrypt = require('bcrypt');
 
+beforeAll(async () => {
+  await db.sync();
+});
+afterAll(async () => {
+  await db.drop();
+});
+
 describe('web server authentication', () => {
   beforeEach(async () => {
     await db.sync({ force: true });
@@ -29,12 +36,13 @@ describe('web server authentication', () => {
   });
 
   it('signs in users', async () => {
-    await mockRequest.post('/signup').send({ username: 'test user', password: 'test password' });
-    const response = await mockRequest.post('/signin').send({ username: 'test user', password: 'test password' });
+    await mockRequest.post('/signup').send({ username: 'singup_test', password: 'pogchamp' });
+    const response = await mockRequest.get('/signin').send({ username: 'singup_test', password: 'pogchamp' });
 
     expect(response.status).toBe(200);
-    expect(response.body.username).toEqual('test user');
-    expect(response.body.password.startsWith('$2b$10$')).toBe(true);
+    expect(response.body.username).toEqual('singup_test');
+    //expect(response.body.password).toStartWith('$2b$10$').toBe(true);
+    expect(response.body.password).toMatch(new RegExp(/^\$2b\$10\$(.*)/g));
   });
 
   it('enforces unique users', async () => {
